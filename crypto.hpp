@@ -92,8 +92,9 @@ namespace SimpleWeb {
     static std::string to_hex_string(const std::string &input) noexcept {
       std::stringstream hex_stream;
       hex_stream << std::hex << std::internal << std::setfill('0');
-      for(auto &byte : input)
-        hex_stream << std::setw(2) << static_cast<int>(static_cast<unsigned char>(byte));
+      for (auto const& byte : input)
+        hex_stream << std::setw(2)
+                   << static_cast<int>(static_cast<unsigned char>(byte));
       return hex_stream.str();
     }
 
@@ -120,8 +121,10 @@ namespace SimpleWeb {
       hash.resize(128 / 8);
       MD5_Final(reinterpret_cast<unsigned char *>(&hash[0]), &context);
 
-      for(std::size_t c = 1; c < iterations; ++c)
-        MD5(reinterpret_cast<const unsigned char *>(&hash[0]), hash.size(), reinterpret_cast<unsigned char *>(&hash[0]));
+      for (std::size_t c = 1; c < iterations; ++c) {
+        MD5(reinterpret_cast<const unsigned char*>(&hash[0]), hash.size(),
+            reinterpret_cast<unsigned char*>(&hash[0]));
+      }
 
       return hash;
     }

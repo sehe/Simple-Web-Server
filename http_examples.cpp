@@ -96,12 +96,14 @@ int main() {
 
     stream << "<h2>Query Fields</h2>";
     auto query_fields = request->parse_query_string();
-    for(auto &field : query_fields)
+    for (auto& field : query_fields) {
       stream << field.first << ": " << field.second << "<br>";
+    }
 
     stream << "<h2>Header Fields</h2>";
-    for(auto &field : request->header)
+    for (auto& field : request->header) {
       stream << field.first << ": " << field.second << "<br>";
+    }
 
     response->write(stream);
   };
@@ -130,11 +132,14 @@ int main() {
       auto web_root_path = boost::filesystem::canonical("web");
       auto path = boost::filesystem::canonical(web_root_path / request->path);
       // Check if path is within web_root_path
-      if(distance(web_root_path.begin(), web_root_path.end()) > distance(path.begin(), path.end()) ||
-         !equal(web_root_path.begin(), web_root_path.end(), path.begin()))
+      if (distance(web_root_path.begin(), web_root_path.end()) >
+            distance(path.begin(), path.end()) ||
+          !equal(web_root_path.begin(), web_root_path.end(), path.begin())) {
         throw invalid_argument("path must be within root path");
-      if(boost::filesystem::is_directory(path))
+      }
+      if(boost::filesystem::is_directory(path)) {
         path /= "index.html";
+      }
 
       SimpleWeb::CaseInsensitiveMultimap header;
 
@@ -181,20 +186,22 @@ int main() {
             if((read_length = ifs->read(&buffer[0], static_cast<streamsize>(buffer.size())).gcount()) > 0) {
               response->write(&buffer[0], read_length);
               if(read_length == static_cast<streamsize>(buffer.size())) {
-                response->send([response, ifs](const SimpleWeb::error_code &ec) {
-                  if(!ec)
-                    read_and_send(response, ifs);
-                  else
-                    cerr << "Connection interrupted" << endl;
-                });
+                response->send(
+                  [response, ifs](const SimpleWeb::error_code& ec) {
+                    if (!ec) {
+                      read_and_send(response, ifs);
+                    } else {
+                      cerr << "Connection interrupted" << endl;
+                    }
+                  });
               }
             }
           }
         };
         FileServer::read_and_send(response, ifs);
-      }
-      else
+      } else {
         throw invalid_argument("could not read file");
+      }
     }
     catch(const exception &e) {
       response->write(SimpleWeb::StatusCode::client_error_bad_request, "Could not open path " + request->path + ": " + e.what());
@@ -217,7 +224,7 @@ int main() {
   // Client examples
   HttpClient client("localhost:8080");
 
-  string json_string = "{\"firstName\": \"John\",\"lastName\": \"Smith\",\"age\": 25}";
+  string json_string = R"({"firstName": "John","lastName": "Smith","age": 25})";
 
   // Synchronous request examples
   try {
@@ -232,10 +239,13 @@ int main() {
   }
 
   // Asynchronous request example
-  client.request("POST", "/json", json_string, [](shared_ptr<HttpClient::Response> response, const SimpleWeb::error_code &ec) {
-    if(!ec)
-      cout << response->content.rdbuf() << endl;
-  });
+  client.request("POST", "/json", json_string,
+                 [](shared_ptr<HttpClient::Response> response,
+                    const SimpleWeb::error_code& ec) {
+                   if (!ec) {
+                     cout << response->content.rdbuf() << endl;
+                   }
+                 });
   client.io_service->run();
 
   server_thread.join();

@@ -1,9 +1,16 @@
-IndentWidth: 2
-AccessModifierOffset: -2
-UseTab: Never
-ColumnLimit: 0
-MaxEmptyLinesToKeep: 2
-SpaceBeforeParens: Never
-BreakBeforeBraces: Custom
-BraceWrapping: {BeforeElse: true, BeforeCatch: true}
-NamespaceIndentation: All
+---
+Language:                                       Cpp
+BasedOnStyle:                                   LLVM
+AccessModifierOffset:                           -2
+BreakBeforeTernaryOperators:                    true
+ColumnLimit:                                    80
+CompactNamespaces:                              true
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ConstructorInitializerIndentWidth:              2
+ContinuationIndentWidth:                        2
+FixNamespaceComments:                           true
+IndentWidth:                                    2
+NamespaceIndentation:                           All
+PointerAlignment:                               Left
+TabWidth:                                       2
+UseTab:                                         Never

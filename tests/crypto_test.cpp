@@ -34,31 +34,35 @@ const vector<pair<string, string>> sha512_string_tests = {
     {"The quick brown fox jumps over the lazy dog", "07e547d9586f6a73f73fbac0435ed76951218fb7d0c8d788a309d785436bbb642e93a252a954f23912547d1e8a3b5ed6e1bfd7097821233fa0538f3db854fee6"}};
 
 int main() {
-  for(auto &string_test : base64_string_tests) {
+  for (const auto& string_test : base64_string_tests) {
     assert(Crypto::Base64::encode(string_test.first) == string_test.second);
     assert(Crypto::Base64::decode(string_test.second) == string_test.first);
   }
 
-  for(auto &string_test : md5_string_tests) {
-    assert(Crypto::to_hex_string(Crypto::md5(string_test.first)) == string_test.second);
+  for (const auto& string_test : md5_string_tests) {
+    assert(Crypto::to_hex_string(Crypto::md5(string_test.first)) ==
+           string_test.second);
     stringstream ss(string_test.first);
     assert(Crypto::to_hex_string(Crypto::md5(ss)) == string_test.second);
   }
 
-  for(auto &string_test : sha1_string_tests) {
-    assert(Crypto::to_hex_string(Crypto::sha1(string_test.first)) == string_test.second);
+  for (const auto& string_test : sha1_string_tests) {
+    assert(Crypto::to_hex_string(Crypto::sha1(string_test.first)) ==
+           string_test.second);
     stringstream ss(string_test.first);
     assert(Crypto::to_hex_string(Crypto::sha1(ss)) == string_test.second);
   }
 
-  for(auto &string_test : sha256_string_tests) {
-    assert(Crypto::to_hex_string(Crypto::sha256(string_test.first)) == string_test.second);
+  for (const auto& string_test : sha256_string_tests) {
+    assert(Crypto::to_hex_string(Crypto::sha256(string_test.first)) ==
+           string_test.second);
     stringstream ss(string_test.first);
     assert(Crypto::to_hex_string(Crypto::sha256(ss)) == string_test.second);
   }
 
-  for(auto &string_test : sha512_string_tests) {
-    assert(Crypto::to_hex_string(Crypto::sha512(string_test.first)) == string_test.second);
+  for (const auto& string_test : sha512_string_tests) {
+    assert(Crypto::to_hex_string(Crypto::sha512(string_test.first)) ==
+           string_test.second);
     stringstream ss(string_test.first);
     assert(Crypto::to_hex_string(Crypto::sha512(ss)) == string_test.second);
   }

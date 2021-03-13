@@ -6,7 +6,7 @@ using namespace SimpleWeb;
 
 int main() {
   assert(status_code("000 Error") == StatusCode::unknown);
-  assert(status_code(StatusCode::unknown) == "");
+  assert(status_code(StatusCode::unknown).empty());
   assert(status_code("100 Continue") == StatusCode::information_continue);
   assert(status_code(StatusCode::information_continue) == "100 Continue");
   assert(status_code("200 OK") == StatusCode::success_ok);

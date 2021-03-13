@@ -51,8 +51,9 @@ int main() {
         assert(scope_runner.count > 0);
       });
     }
-    for(auto &thread : threads)
+    for (auto& thread : threads) {
       thread.join();
+    }
     assert(scope_runner.count == 0);
   }
 
@@ -120,7 +121,7 @@ int main() {
     assert(request->query_string == "testing");
     auto queries = request->parse_query_string();
     auto it = queries.find("Testing");
-    assert(it != queries.end() && it->first == "testing" && it->second == "");
+    assert(it != queries.end() && it->first == "testing" && it->second.empty());
     response->write(request->query_string);
   };
 
@@ -191,7 +192,7 @@ int main() {
       assert(r->header.find("tEst3")->second == "test4");
       assert(r->header.find("content-length")->second == "0");
       output << r->content.rdbuf();
-      assert(output.str() == "");
+      assert(output.str().empty());
     }
 
     {
@@ -331,7 +332,7 @@ int main() {
   // Test multiple requests through a persistent connection
   {
     HttpClient client("localhost:8080");
-    assert(client.connections.size() == 0);
+    assert(client.connections.empty());
     for(size_t c = 0; c < 5000; ++c) {
       auto r1 = client.request("POST", "/string", "A string");
       assert(SimpleWeb::status_code(r1->status_code) == SimpleWeb::StatusCode::success_ok);

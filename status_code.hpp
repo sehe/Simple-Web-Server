@@ -143,8 +143,9 @@ namespace SimpleWeb {
     class StringToStatusCode : public std::unordered_map<std::string, SimpleWeb::StatusCode> {
     public:
       StringToStatusCode() {
-        for(auto &status_code : status_code_strings())
+        for (auto const& status_code : status_code_strings()) {
           emplace(status_code.second, status_code.first);
+        }
       }
     };
     static StringToStatusCode string_to_status_code;
